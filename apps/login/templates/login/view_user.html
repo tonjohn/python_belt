@@ -1,0 +1,29 @@
+{% extends "book_review/base.html" %}
+{% block title %}User Reviews{% endblock %}
+{% block header %}
+<a href="{% url 'books:index' %}">Home</a> <a href="{% url 'books:add' %}">Add Book and Review</a> <a href="{% url 'login:logout' %}">Logout</a>
+{% endblock %}
+{% block main_content %}
+<div class="container">
+
+    <section>
+    <h1>User Alias: {{user.alias}}</h1>
+    <h2>Name: {{user.name|title}}</h2>
+    <h2>Email:</h2>
+    <h2>Total Reviews: {{user.reviews.count}}</h2>
+
+        <section>
+            <h3>Posted Reviews on the following books:</h3>
+            <ul>
+            {% for review in user.reviews.all %}
+                <li><a href="{% url 'books:view_book' book_id=review.book.id%}">{{review.book.title}}</a></li>
+            {% empty %}
+                <li>This user has not posted any reviews.</li>
+            {% endfor %}
+            </ul>
+        </section>
+    </section>
+
+
+</div>
+{% endblock %}
