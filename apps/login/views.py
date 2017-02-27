@@ -7,7 +7,7 @@ from .models import User
 def index(request):
 	if 'userid' in request.session:
 		print "Userid: ", request.session['userid']
-		return redirect('books:index')
+		return redirect('belt:index')
 
 	# if validate_user(request):
 	# 	return redirect(reverse('login:success'))
@@ -31,7 +31,7 @@ def index(request):
 
 def login(request):
 	if request.session.get('is_authed'):
-		return redirect('books:index')
+		return redirect('belt:index')
 
 	if request.method == "POST":
 		print "Processing Login for", request.POST['email']
@@ -50,7 +50,7 @@ def login(request):
 			for msg in results['messages']:
 				messages.error(request, msg)
 			request.session['email'] = request.POST['email']
-		return redirect("books:index")
+		return redirect("belt:index")
 	else:
 		return render(request, "base.html")
 
@@ -76,7 +76,7 @@ def do_register(request):
 			request.session['alias'] = request.POST['alias']
 			request.session['name'] = request.POST['name']
 			request.session['email'] = request.POST['email']
-		return redirect( "books:index" )
+		return redirect( "belt:index" )
 	else:
 		return render(request, "register.html")
 

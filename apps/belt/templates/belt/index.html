@@ -1,0 +1,76 @@
+{% extends "belt/base.html" %}
+{% block title %}My Wish List{% endblock %}
+{% block main_content %}
+<div class="container">
+    <h1>Hello, {{request.session.name}}!</h1>
+
+    <section>
+        <h4>Your Wish list:</h4>
+        <table class="ui selectable celled table">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Added By</th>
+                    <th>Date Added</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for object in objects.all %}
+                <tr>
+                    <td><a href="{% url 'belt:view_item' object_id=object.id %}">{{object.name}}</a></td>
+                    <td>{{object.added_by.alias}}</td>
+                    <td>{{object.created_at|date:"M d Y" }}</td>
+                    <td>
+                        {% if object.added_by.id != request.session.userid %}
+                        <form action="{% url 'belt:remove_item' object_id=object.id %}" method="post">
+                            {% csrf_token %}
+                            <input type="submit" value="Remove my Wishlist">
+                        </form>
+                        {% else %}
+                        <form action="{% url 'belt:delete_item' object_id=object.id%}" method="post">
+                            {% csrf_token %}
+                            <input type="submit" value="Delete">
+                        </form>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="4">Your wishlist list is empty.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </section>
+    <section>
+        <h4>Other Users' Wish List:</h4>
+        <table class="ui selectable celled table">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Added By</th>
+                    <th>Date Added</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            {% for object in items %}
+                <tr>
+                    <td><a href="{% url 'belt:view_item' object_id=object.id %}">{{object.name}}</a></td>
+                    <td>{{object.added_by.alias}}</td>
+                    <td>{{object.created_at|date:"M d Y" }}</td>
+                    <td>
+                        <form action="{% url 'belt:add_item' object_id=object.id %}" method="post">
+                            {% csrf_token %}
+                            <input type="submit" value="Add to my Wishlist">
+                        </form>
+                    </td>
+                </tr>
+            {% empty %}
+            <tr><td colspan="4">There are no items availabe to add.</td></tr>
+            {% endfor %}
+        </table>
+    </section>
+    <section>
+        <h2><a href="{% url 'belt:create_item' %}">Add Item</a></h2>
+    </section>
+</div>
+{% endblock %}

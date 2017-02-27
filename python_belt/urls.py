@@ -16,6 +16,6 @@ Including another URLconf
 from django.conf.urls import url, include
 
 urlpatterns = [
-    url(r'^admin/', include("belt.site.urls", namespace='belt')),
-    url(r'^', include("login.site.urls", namespace='login')),
+    url(r'^', include("apps.belt.urls", namespace='belt')),
+    url(r'^', include("apps.login.urls", namespace='login')),
 ]

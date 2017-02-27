@@ -1,0 +1,13 @@
+<article class="message">
+    <header>
+        <h5><time datetime="{{object.created_at}}">{{ object.created_at|timesince }} ago</time> | {{object.likes_by_secret.count}} likes</h5>
+    </header>
+    <section>
+        <p>{{object.secret}}</p>
+        {%if object.is_liked%}<em>You liked this.</em>{%else%}<a href="{% url 'secrets:like' secret_id=object.id %}">Like</a>{%endif%} {% if object.user.id == request.session.userid %}<a href="{% url 'secrets:delete' secret_id=object.id %}">Delete</a>{% endif %}
+    </section>
+        <section class="user_comments">
+            {% block comments %}
+            {% endblock %}
+        </section>
+</article>

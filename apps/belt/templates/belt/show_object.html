@@ -1,0 +1,20 @@
+{% extends "belt/base.html" %}
+{% block title %}{{object.name}}{% endblock %}
+{% block main_content %}
+<div class="container">
+    <h1>{{object.name}}</h1>
+
+    <section>
+        <h3>Users who added this product/item under their wish list:</h3>
+        <ul>
+        {% for user in object.user.all %}
+            <li>{{user.alias}}</li>
+        {% empty %}
+            <li>No users have added this to their wishlist.</li>
+        {% endfor %}
+        </ul>
+    </section>
+
+
+</div>
+{% endblock %}

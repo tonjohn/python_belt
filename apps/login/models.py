@@ -15,11 +15,12 @@ class UserManager(models.Manager):
 		error = False
 		msgs = []
 		user = False
-		alias = data['alias']
-		name = data['name']
-		email = data['email']
-		password = data['password']
-		password2 = data['confirm_password']
+		alias = data.get('alias')
+		name = data.get('name')
+		email = data.get('email')
+		password = data.get('password')
+		password2 = data.get('confirm_password')
+		dob = data.get('date_hired')
 
 		if self.filter(email=email).exists():
 			msgs.append("Email already exists. Please login or choose a different email.")
@@ -29,11 +30,11 @@ class UserManager(models.Manager):
 			msgs.append("Invalid Email Address")
 			error = True
 
-		if not alias.isalpha():
+		if not alias.isalnum() or len(alias) < 3:
 			error = True
 			msgs.append("Invalid Alias")
 
-		if not len(name) > 1:
+		if not len(name) >= 3:
 			error = True
 			msgs.append("Invalid Name")
 
@@ -45,25 +46,14 @@ class UserManager(models.Manager):
 			msgs.append("Passwords do not match")
 
 		# 1986-05-15
-		# print "DOB:", dob
-		# if len(dob) > 0:
-		# 	dob = time.strptime(dob, '%Y-%m-%d')
-		# 	tNow = time.strptime(time.asctime())
-		# 	print dob[0]
-		#
-		# 	print "Dob:", dob
-		# 	print "tNow:", tNow
-		# 	if tNow[0] - dob[0] < 18 or (tNow[0] - dob[0] == 18 and dob[1] > tNow[1]):
-		# 		error = True
-		# 		msgs.append( 'Must be 18 years or older')
-		# 		# time.struct_time(tm_year=1986, tm_mon=5, tm_mday=15, tm_hour=0, tm_min=0, tm_sec=0, tm_wday=3, tm_yday=135, tm_isdst=-1)
-		# else:
-		# 	error = True
-		# 	msgs.append( 'Please provide your Date of Birth')
+		print "Date Hired:", dob
+		if not dob:
+			error = True
+			msgs.append( 'Please provide your Hire Date')
 
 		if not error:
 			hashed = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
-			user = self.create(alias=alias, name=name, email=email, password=hashed)
+			user = self.create(alias=alias, name=name, email=email, password=hashed, date_hired=dob)
 
 		return {"error": error, "messages": msgs, "user": user}
 
@@ -95,6 +85,7 @@ class User(models.Model):
 	alias = models.CharField(max_length=45)
 	email = models.CharField(max_length=255)
 	password = models.CharField(max_length=255)
+	date_hired = models.DateField()
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
 

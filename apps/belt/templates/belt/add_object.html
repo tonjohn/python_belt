@@ -1,0 +1,19 @@
+{% extends "belt/base.html" %}
+{% block title %}Create Item{% endblock %}
+{% block main_content %}
+<div class="container">
+    <h1>Create a New Wish List Item</h1>
+
+    <form id="add" action="{% url 'belt:create_item' %}" method="post">
+        {% csrf_token %}
+        <div class="row">
+            <label for="name">Item/Product:</label>
+            <input id="name" type="text" name="name" placeholder="iPhone 9">
+        </div>
+        <div class="row">
+            <input type="submit" name="submit" value="Add">
+        </div>
+    </form>
+
+</div>
+{% endblock %}

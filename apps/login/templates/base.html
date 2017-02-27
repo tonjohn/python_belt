@@ -121,7 +121,7 @@
 					},
 					{
 					  type   : 'length[8]',
-					  prompt : 'Your password must be at least 9 characters'
+					  prompt : 'Your password must be at least 8 characters'
 					}
 				  ]
 				},
@@ -134,7 +134,7 @@
 					},
 					{
 					  type   : 'length[9]',
-					  prompt : 'Your password must be at least 9 characters'
+					  prompt : 'Your password must be at least 8 characters'
 					},
 					{
 					  type   : 'match[password]',
@@ -148,6 +148,10 @@
 					{
 					  type   : 'empty',
 					  prompt : 'Please enter your alias'
+					},
+					{
+					  type   : 'length[3]',
+					  prompt : 'Your alias must be at least 3 characters'
 					}
 				  ]
 				},
@@ -157,6 +161,19 @@
 					{
 					  type   : 'empty',
 					  prompt : 'Please enter your name'
+					},
+					{
+					  type   : 'length[3]',
+					  prompt : 'Your name must be at least 3 characters'
+					}
+				  ]
+				},
+				date_hired: {
+				  identifier  : 'date_hired',
+				  rules: [
+					{
+					  type   : 'empty',
+					  prompt : 'Please provide your hire date'
 					}
 				  ]
 				}
